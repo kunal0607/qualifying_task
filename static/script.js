@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function fetchStepsConfig() {
     // Assume '/static/stepsConfig.json' is the correct path
-    fetch('/static/stepsConfig.json')
+    fetch('https://kunal0607.github.io/qualifying_task/static/stepsConfig.json')
         .then(response => response.json())
         .then(data => {
             stepsConfig = data;
