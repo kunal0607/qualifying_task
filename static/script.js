@@ -53,7 +53,7 @@ function updateStepIndicator() {
 function validateSchema(jsonInput, stepIndex) {
     try {
         const schema = JSON.parse(jsonInput);
-        fetch('/validate-schema', {
+        fetch('https://kunalbansal6701.pythonanywhere.com/validate-schema', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({schema, step: stepIndex}),

@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify, render_template
 from jsonschema import Draft202012Validator, ValidationError, SchemaError
 import json
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, origins="https://kunal0607.github.io/qualifying_task/")
+
 
 @app.route('/')
 def home():
