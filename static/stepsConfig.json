@@ -1,0 +1,12 @@
+[
+    {
+        "step": 1,
+        "description": "Provide a JSON Schema",
+        "validationType": "Draft2020-12"
+    },
+    {
+        "step": 2,
+        "description": "Provide a JSON Schema that defines an array with items of type number",
+        "validationType": "ArrayWithNumbers"
+    }
+]
