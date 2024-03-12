@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Website</title>
+    <title>Welcome to JSON Schema Validator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-json.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-monokai.js"></script>
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <p>This is my first GitHub Pages site.</p>
+    <div class="container">
+        <h1>Welcome to JSON Schema Validator</h1>
+        <div id="stepIndicator" style="display: none;"></div>
+        <div id="editorContainer" style="display: none;">
+            <div id="editor" style="height: 300px; width: 600px;"></div>
+        </div>
+        <button id="nextButton">Start</button>
+        <div id="validationResult"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
