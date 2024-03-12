@@ -27,8 +27,9 @@ button {
 }
 
 textarea {
-    width: 90%; 
-    height: 300px;
+    width: 90%; /* Adjusted width for smaller screens */
+    max-width: 600px; /* Limit maximum width */
+    height: 200px; /* Reduced height for smaller screens */
     margin-top: 10px;
     padding: 10px;
     border-radius: 5px;
@@ -36,4 +37,3 @@ textarea {
     font-family: monospace;
     resize: vertical;
 }
-
