@@ -20,6 +20,17 @@ document.addEventListener('DOMContentLoaded', function() {
             validateSchema(jsonInput, currentStepIndex);
         }
     });
+
+    // Setup click listener for the "Home" button
+    document.getElementById('homeButton').addEventListener('click', function() {
+        // Reset current step index and hide unnecessary elements
+        currentStepIndex = 0;
+        document.getElementById('editorContainer').style.display = "none";
+        document.getElementById('validationResult').style.display = "none";
+        document.getElementById('nextButton').innerText = "Start";
+        document.getElementById('stepIndicator').style.display = "none";
+        document.getElementById('validationResult').innerText = "";
+    });
 });
 
 function fetchStepsConfig() {
@@ -53,36 +64,33 @@ function updateStepIndicator() {
 function validateSchema(jsonInput, stepIndex) {
     try {
         const schema = JSON.parse(jsonInput);
-        fetch('https://kunalbansal6701.pythonanywhere.com/validate-schema', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({schema, step: stepIndex}),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server responded with status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('validationResult').innerText = data.message;
-            if (data.message.includes("Schema is valid.") && currentStepIndex < stepsConfig.length) {
-                // Prepare for the next step
+
+        if (stepIndex === 1) {
+            // Step 1 validation
+            if (isObjectEmpty(schema)) {
+                document.getElementById('validationResult').innerText = "Step 1 validation successful. Proceeding to Step 2.";
                 currentStepIndex++;
                 updateStepIndicator();
                 editor.setValue("{}"); // Clear the editor for the next input
-            } else if (currentStepIndex === stepsConfig.length) {
-                // Complete all steps
-                document.getElementById('validationResult').innerText += " All steps completed successfully.";
-                document.getElementById('nextButton').style.display = "none";
+            } else {
+                document.getElementById('validationResult').innerText = "Step 1 validation failed. Please provide a valid JSON Schema for Draft 2020-12.";
             }
-        })
-        .catch(error => {
-            document.getElementById('validationResult').innerText = "Validation failed: " + error.message;
-            console.error('Error:', error);
-        });
+        } else if (stepIndex === 2) {
+            // Step 2 validation
+            if (schema.type === "array" && schema.items && schema.items.type === "number") {
+                document.getElementById('validationResult').innerText = "Step 2 validation successful. All steps completed successfully.";
+                currentStepIndex++;
+                document.getElementById('nextButton').style.display = "none"; // Hide the next button since all steps are completed
+            } else {
+                document.getElementById('validationResult').innerText = "Step 2 validation failed. Please provide a JSON Schema that defines an array with items of type number.";
+            }
+        }
     } catch (e) {
         document.getElementById('validationResult').innerText = 'Invalid JSON format: ' + e.message;
         console.error('Parsing error:', e);
     }
+}
+
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
