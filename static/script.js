@@ -1,23 +1,25 @@
 let editor; 
 let currentStepIndex = 0; 
-let stepsConfig = [];
+let stepsConfig = []; 
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('editorContainer').style.display = "none";
     document.getElementById('validationResult').style.display = "none";
+
 
     document.getElementById('nextButton').addEventListener('click', function() {
         if (currentStepIndex === 0) {
             document.getElementById('editorContainer').style.display = "block";
             document.getElementById('validationResult').style.display = "block";
             initEditor();
-            fetchStepsConfig(); 
+            fetchStepsConfig();
         } else {
             const jsonInput = editor.getValue();
             validateSchema(jsonInput, currentStepIndex);
         }
     });
 
+    
     document.getElementById('homeButton').addEventListener('click', function() {
         currentStepIndex = 0;
         document.getElementById('editorContainer').style.display = "none";
@@ -25,17 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('nextButton').innerText = "Start";
         document.getElementById('stepIndicator').style.display = "none";
         document.getElementById('validationResult').innerText = "";
-        document.getElementById('homeButton').style.display = "none"; 
+        document.getElementById('homeButton').style.display = "none";
     });
 });
 
 function fetchStepsConfig() {
-    
     fetch('https://kunal0607.github.io/qualifying_task/static/stepsConfig.json')
         .then(response => response.json())
         .then(data => {
             stepsConfig = data;
-            currentStepIndex = 1; 
+            currentStepIndex = 1;
             updateStepIndicator();
             document.getElementById('nextButton').innerText = "Validate Schema";
         })
@@ -46,7 +47,7 @@ function initEditor() {
     editor = ace.edit("editor");
     editor.session.setMode("ace/mode/json");
     editor.setTheme("ace/theme/monokai");
-    editor.setValue("{}"); 
+    editor.setValue("{}");
 }
 
 function updateStepIndicator() {
@@ -55,9 +56,9 @@ function updateStepIndicator() {
         document.getElementById('stepIndicator').innerText = stepConfig.description;
         document.getElementById('stepIndicator').style.display = "block";
         if (currentStepIndex === 2) {
-            document.getElementById('homeButton').style.display = "block"; 
+            document.getElementById('homeButton').style.display = "block";
         } else {
-            document.getElementById('homeButton').style.display = "none"; 
+            document.getElementById('homeButton').style.display = "none";
         }
     }
 }
@@ -79,6 +80,7 @@ function validateSchema(jsonInput, stepIndex) {
             if (schema.type === "array" && schema.items && schema.items.type === "number") {
                 document.getElementById('validationResult').innerText = "Step 2 validation successful. All steps completed successfully.";
                 currentStepIndex++;
+                document.getElementById('nextButton').style.display = "none"; 
             } else {
                 document.getElementById('validationResult').innerText = "Step 2 validation failed. Please provide a JSON Schema that defines an array with items of type number.";
             }
